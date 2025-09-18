@@ -202,6 +202,30 @@ const getColumnsForType = (type) => {
       // { id: "pictureFile", label: "🖼️ PICTURE", minWidth: 150 },
       // { id: "lastLogin", label: "👤 LAST LOGIN", minWidth: 160 },
     ];
+  } else if (type === "cmAnnouncement") {
+    // For CM and PM announcements
+    return [
+      {
+        id: "actions",
+        label: "🔧 ACTIONS",
+        minWidth: 120,
+      },
+      {
+        id: "serialNo",
+        label: "SERIAL NO",
+        minWidth: 120,
+      },
+      { id: "announcementNo", label: "ANNOUNCEMENT NO", minWidth: 150 },
+      {
+        id: "dateOfAnnouncement",
+        label: "📅 ANNOUNCEMENT DATE",
+        minWidth: 150,
+      },
+      { id: "district", label: "📍 DISTRICT", minWidth: 120 },
+      { id: "department", label: "🏢 DEPARTMENT", minWidth: 140 },
+      { id: "status", label: "⚡ STATUS", minWidth: 100 },
+      { id: "dateOfCompletion", label: "✅ DATE OF COMPLETION", minWidth: 150 },
+    ];
   } else {
     // For CM and PM announcements
     return [
@@ -504,7 +528,23 @@ const AnnouncementData = () => {
             </div>
           </TableCell>
         );
-      case "serialNo":
+      // case "serialNo":
+      //   return (
+      //     <TableCell
+      //       sx={{
+      //         padding: "12px",
+      //         fontWeight: 600,
+      //         color: "#1e293b",
+      //       }}
+      //     >
+      //       {item.serialNo}
+      //     </TableCell>
+      //   );
+      case "serialNo": {
+        const href = activeTab
+          ? `/form-Data/${activeTab}/view/${item._id}`
+          : null;
+
         return (
           <TableCell
             sx={{
@@ -513,9 +553,24 @@ const AnnouncementData = () => {
               color: "#1e293b",
             }}
           >
-            {item.serialNo}
+            {href ? (
+              <Link
+                href={href}
+                style={{
+                  color: "#2563eb",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                {item.serialNo}
+              </Link>
+            ) : (
+              item.serialNo
+            )}
           </TableCell>
         );
+      }
+
       case "announcementNo":
         return (
           <TableCell

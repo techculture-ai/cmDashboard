@@ -186,6 +186,7 @@ const sidebarMenu = [
     href: "/announcement",
     icon: <CampaignTwoToneIcon size={16} />,
     items: [
+      { title: "Dashboard", href: "/form-Data/dash" },
       { title: "PM Announcement", href: "/form-Data/pmAnnouncement" },
       { title: "CM Announcement", href: "/form-Data/cmAnnouncement" },
       { title: "Central Scheme", href: "/form-Data/schemeCentralGovt" },
@@ -196,9 +197,9 @@ const sidebarMenu = [
       },
       { title: "Review Meetings", href: "/form-Data/reviewMeetings" },
       { title: "New Initiatives", href: "/form-Data/newInitiatives" },
-      { title: "HCM Instruction", href: "/form-Data/hcmInstruction" },
-      { title: "Statement", href: "/form-Data/statement" },
-      { title: "CM Helpline", href: "/form-Data/cmHelpline" },
+      // { title: "HCM Instruction", href: "/form-Data/hcmInstruction" },
+      { title: "Mp/MLA Statements", href: "/form-Data/statement" },
+      { title: "CM Helpline Status", href: "/form-Data/cmHelpline" },
     ],
   },
 ];

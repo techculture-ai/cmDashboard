@@ -58,7 +58,7 @@ const DepartmentLogin = () => {
         // localStorage.setItem("isDeptLoggedIn", "true");
         setSuccessMessage("✅ Login successful. Redirecting...");
         setTimeout(() => {
-          router.push(`/form-Data/pmAnnouncement`);
+          router.push(`/form-Data/dash`);
         }, 1500); // delay redirect for 1.5s
       }
     } catch (err) {

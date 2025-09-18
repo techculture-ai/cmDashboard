@@ -1139,6 +1139,8 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 
 // Styled components for better table appearance
@@ -1691,6 +1693,19 @@ const SummariseDashboard2 = ({ type }) => {
 
   const [districtWiseStatus, setDistrictWiseStatus] = useState([]);
 
+  const getStatusOptions = (type) => {
+    switch (type) {
+      case "new-initiatives":
+        return ["Open", "Implemented", "In Progress", "Planning", "On Hold"];
+      case "statements":
+        return ["Open", "Published", "In Progress", "Pending"];
+      case "cm-helplines":
+        return ["Open", "Resolved", "In Progress", "Pending"];
+      default:
+        return ["Open", "Completed", "In Progress", "Pending"];
+    }
+  };
+
   //   useEffect(() => {
 
   //     const fetchAndGroupByDepartment = (data) => {
@@ -1795,6 +1810,7 @@ const SummariseDashboard2 = ({ type }) => {
         const now = new Date();
 
         const colorMap = {
+          Open: "#3b82f6",
           Completed: "#10b981",
           "In Progress": "#f74a4a",
           Pending: "#9333EA",
@@ -1943,6 +1959,7 @@ const SummariseDashboard2 = ({ type }) => {
             const district = item.district || "Unknown";
             if (!grouped[district]) {
               grouped[district] = {
+                Open: 0,
                 Completed: 0,
                 "In Progress": 0,
                 Pending: 0,
@@ -2082,6 +2099,19 @@ const SummariseDashboard2 = ({ type }) => {
     fetchData();
   }, [type, status, districts, selectedDepartment]);
   // ------------------------------------
+
+  const getStatusListForType = (type) => {
+    switch (type) {
+      case "new-initiatives":
+        return ["Open", "Implemented", "In Progress", "Planning", "On Hold"];
+      case "statements":
+        return ["Open", "Published", "In Progress", "Pending"];
+      case "cm-helplines":
+        return ["Open", "Resolved", "In Progress", "Pending"];
+      default:
+        return ["Open", "Completed", "In Progress", "Pending"];
+    }
+  };
 
   const statuses = statusConfig[type] || statusConfig.default;
 
@@ -2255,7 +2285,10 @@ const SummariseDashboard2 = ({ type }) => {
           </div>
 
           {/* STATUS CARDS */}
-          {Object.entries(statusCounts).map(([status, count]) => {
+          {/* {Object.entries(statusCounts).map(([status, count]) => { */}
+          {getStatusListForType(type).map((status) => {
+            const count = statusCounts[status] || 0; // fallback to 0
+
             const tileClass = [
               "Completed",
               "Implemented",
@@ -2332,7 +2365,7 @@ const SummariseDashboard2 = ({ type }) => {
 
             <div className="flex items-center justify-end gap-3">
               <div className="box">
-                <Select
+                {/* <Select
                   value={status}
                   onChange={handleChangeStatus}
                   displayEmpty
@@ -2344,7 +2377,20 @@ const SummariseDashboard2 = ({ type }) => {
                   <MenuItem value={"Completed"}>Completed</MenuItem>
                   <MenuItem value={"In Progress"}>In Progress</MenuItem>
                   <MenuItem value={"Pending"}>Pending</MenuItem>
-                  {/* <MenuItem value={"Delayed"}>Delayed</MenuItem> */}
+                </Select> */}
+                <Select
+                  value={status}
+                  onChange={handleChangeStatus}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                  size="small"
+                >
+                  <MenuItem value="">All Status</MenuItem>
+                  {getStatusOptions(type).map((opt) => (
+                    <MenuItem key={opt} value={opt}>
+                      {opt}
+                    </MenuItem>
+                  ))}
                 </Select>
               </div>
 
@@ -2409,7 +2455,15 @@ const SummariseDashboard2 = ({ type }) => {
                     <Tooltip content={<CustomTooltip />} />
                     <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                       {districtItem.data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={entry.fill}
+                          cursor="pointer"
+                          onClick={() => {
+                            setStatus(entry.name); // e.g. "Pending"
+                            setDistricts(districtItem.district); // e.g. "Pauri Garhwal"
+                          }}
+                        />
                       ))}
                       <LabelList
                         dataKey="value"
@@ -2632,12 +2686,30 @@ const TableData = ({ type, status, district, department }) => {
                           </StyledTableCell>
                         );
                       } else if (column.id === "serialNo") {
-                        value = page * rowsPerPage + index + 1;
+                        {
+                          /* value = item.serialNo || "N/A";
                         cellContent = (
                           <StyledTableCell align={column.align}>
                             <div className="font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded-full text-center min-w-[50px]">
                               {value}
                             </div>
+                          </StyledTableCell>
+                        ); */
+                        }
+                        return (
+                          <StyledTableCell key={column.id}>
+                            {item._id ? (
+                              <Link
+                                href={`/dept-form/${type}/view/${item._id}`}
+                                className="font-semibold text-blue-600 underline cursor-pointer bg-gray-100 px-3 py-1 rounded-full text-center min-w-[50px] block"
+                              >
+                                {item.serialNo || "N/A"}
+                              </Link>
+                            ) : (
+                              <div className="font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded-full text-center min-w-[50px]">
+                                {item.serialNo || "N/A"}
+                              </div>
+                            )}
                           </StyledTableCell>
                         );
                       } else if (column.id === "representative") {

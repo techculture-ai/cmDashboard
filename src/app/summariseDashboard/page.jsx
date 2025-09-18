@@ -722,8 +722,8 @@ const SummariseDashboard = () => {
           />
 
           <BarChartComponent
-            title="I. CM Helpline"
-            chartTitle={`Number of CM Helpline (${
+            title="I. CM Helpline Status"
+            chartTitle={`Number of CM Helpline Status(${
               categoryData[7]?.total ?? 0
             })`}
             data={cmHelplineStatusData}
@@ -731,8 +731,10 @@ const SummariseDashboard = () => {
           />
 
           <BarChartComponent
-            title="J. Statements"
-            chartTitle={`Number of Statements (${categoryData[8]?.total ?? 0})`}
+            title="J. MP/MLA Statements"
+            chartTitle={`Number of MP/MLA Statements (${
+              categoryData[8]?.total ?? 0
+            })`}
             data={statementStatusData}
             type="statements"
           />
@@ -851,7 +853,7 @@ const TableData = () => {
             <Tab label="New Initiatives" />
             <Tab label="HCM Instructions" />
             <Tab label="MP/MLA Statements" />
-            <Tab label="CM Helpline" />
+            <Tab label="CM Helpline Status" />
             {/* <Tab label="Major Events" /> */}
           </Tabs>
         </div>
@@ -1526,12 +1528,32 @@ const EnhancedTable = ({ type, status, district, department }) => {
                     {cols.map((c) => {
                       const align = c.align || "left";
 
-                      if (c.id === "serialNo") {
+                      {
+                        /* if (c.id === "serialNo") {
                         return (
                           <StyledTableCell key={c.id} align={align}>
                             <div className="font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded-full text-center min-w-[50px]">
-                              {page * rowsPerPage + idx + 1}
+                              {item.serialNo || "N/A"}
                             </div>
+                          </StyledTableCell>
+                        );
+                      } */
+                      }
+                      if (c.id === "serialNo") {
+                        return (
+                          <StyledTableCell key={c.id} align={align}>
+                            {item._id ? (
+                              <Link
+                                href={`/dept-form/${type}/view/${item._id}`}
+                                className="font-semibold text-blue-600 underline cursor-pointer bg-gray-100 px-3 py-1 rounded-full text-center min-w-[50px] block"
+                              >
+                                {item.serialNo || "N/A"}
+                              </Link>
+                            ) : (
+                              <div className="font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded-full text-center min-w-[50px]">
+                                {item.serialNo || "N/A"}
+                              </div>
+                            )}
                           </StyledTableCell>
                         );
                       }
