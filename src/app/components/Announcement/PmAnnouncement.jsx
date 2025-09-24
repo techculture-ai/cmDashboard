@@ -150,9 +150,9 @@ const PMAnnouncement = () => {
   const fetchDepartments = async () => {
     try {
       const urls = [
-        "https://cmbhartibackend.onrender.com/api/departments/govt/",
-        "https://cmbhartibackend.onrender.com/api/departments/public/",
-        "https://cmbhartibackend.onrender.com/api/departments/aided/",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/departments/govt/`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/departments/public/`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/departments/aided/`,
       ];
 
       const responses = await Promise.all(urls.map((url) => fetch(url)));

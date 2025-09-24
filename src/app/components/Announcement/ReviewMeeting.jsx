@@ -102,15 +102,15 @@ const ReviewMeeting = () => {
     try {
       const departmentSources = [
         {
-          url: "https://cmbhartibackend.onrender.com/api/departments/govt/",
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/departments/govt/`,
           group: "Government Departments",
         },
         {
-          url: "https://cmbhartibackend.onrender.com/api/departments/public/",
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/departments/public/`,
           group: "Public Undertakings",
         },
         {
-          url: "https://cmbhartibackend.onrender.com/api/departments/aided/",
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/departments/aided/`,
           group: "Aided Departments",
         },
       ];
